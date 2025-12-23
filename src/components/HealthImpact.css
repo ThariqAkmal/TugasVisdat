@@ -5,16 +5,13 @@
   top: 0;
   left: 0;
   z-index: 7;
-  background: linear-gradient(135deg, #e8f4f5 0%, #f7f7f7 100%);
-  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #0d1f35 0%, #1a2d4a 50%, #0a1628 100%);
+  padding: 2rem;
   opacity: 0;
   transform: scale(1.05);
   transition: all 1000ms ease-out;
   pointer-events: none;
   overflow-y: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .health-section.active {
@@ -24,13 +21,810 @@
 }
 
 .health-container {
-  max-width: 1200px;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Header */
+.health-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.6s ease-out;
+}
+
+.health-header.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.title-icon {
+  font-size: 2rem;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 300;
+}
+
+/* Tab Navigation */
+.tab-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-out 0.2s;
+}
+
+.tab-navigation.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tab-btn {
+  padding: 0.7rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, #2ECC71 0%, #27AE60 100%);
+  border-color: transparent;
+  color: #fff;
+  font-weight: 500;
+}
+
+/* Comparison View */
+.comparison-view {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out 0.3s;
+}
+
+.comparison-view.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.comparison-cards {
+  display: grid;
+  grid-template-columns: 1fr 300px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.comparison-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 20px 20px 0 0;
+}
+
+.health-glow {
+  background: linear-gradient(90deg, #2ECC71, #27AE60);
+}
+
+.nonhealth-glow {
+  background: linear-gradient(90deg, #9B59B6, #8E44AD);
+}
+
+.comparison-card .card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.comparison-card h3 {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.comparison-card .card-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.health-card .card-value {
+  color: #2ECC71;
+}
+
+.nonhealth-card .card-value {
+  color: #9B59B6;
+}
+
+.card-percentage {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.breakdown-item {
+  animation: slideIn 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.breakdown-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.breakdown-name {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+}
+
+.breakdown-value {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.breakdown-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.breakdown-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Visual Separator */
+.comparison-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.wave-chart {
+  width: 200px;
+  height: 200px;
+}
+
+.wave-fill {
+  opacity: 0;
+  transition: opacity 1s ease-out 0.5s;
+}
+
+.wave-fill.animate {
+  opacity: 1;
+}
+
+.total-indicator {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.total-label {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+}
+
+.total-value {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Pathways View */
+.pathways-view {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out 0.3s;
+}
+
+.pathways-view.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pathways-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.pathways-column {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 1.5rem;
+}
+
+.pathways-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.pathway-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.pathway-dot.health {
+  background: #2ECC71;
+}
+
+.pathway-dot.nonhealth {
+  background: #9B59B6;
+}
+
+.pathway-card {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: cardFade 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes cardFade {
+  to {
+    opacity: 1;
+  }
+}
+
+.pathway-card:hover,
+.pathway-card.active {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateX(5px);
+}
+
+.pathway-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.pathway-name {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.pathway-percentage {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+}
+
+.pathway-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #4ECDC4;
+  margin-bottom: 0.5rem;
+}
+
+.pathway-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pathway-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pathways-insight {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: rgba(46, 204, 113, 0.1);
+  border: 1px solid rgba(46, 204, 113, 0.2);
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+
+.pathways-insight .insight-icon {
+  font-size: 1.5rem;
+}
+
+.pathways-insight p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.pathways-insight strong {
+  color: #2ECC71;
+}
+
+/* Edinburgh View */
+.edinburgh-view {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out 0.3s;
+}
+
+.edinburgh-view.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.edinburgh-header-card {
+  background: linear-gradient(135deg, rgba(78, 205, 196, 0.1) 0%, rgba(46, 204, 113, 0.1) 100%);
+  border: 1px solid rgba(78, 205, 196, 0.2);
+  border-radius: 20px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.edinburgh-badge {
+  display: inline-block;
+  background: rgba(78, 205, 196, 0.2);
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
+  color: #4ECDC4;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.edinburgh-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.edin-stat {
+  text-align: center;
+}
+
+.edin-stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+
+.edin-stat-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.edinburgh-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.edin-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+
+.edin-card h4 {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.benefits-list,
+.period-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.benefit-row,
+.period-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 70px;
+  gap: 0.75rem;
+  align-items: center;
+  animation: rowSlide 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes rowSlide {
+  to {
+    opacity: 1;
+  }
+}
+
+.benefit-name,
+.period-label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: capitalize;
+}
+
+.benefit-bar-wrapper,
+.period-bar-wrapper {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.benefit-bar,
+.period-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4ECDC4, #2ECC71);
+  border-radius: 4px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.benefit-value,
+.period-value {
+  font-size: 0.85rem;
+  color: #4ECDC4;
+  font-weight: 600;
+  text-align: right;
+}
+
+.traffic-card {
+  grid-column: span 2;
+}
+
+.traffic-note {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 1rem 0;
+}
+
+.traffic-chart {
   width: 100%;
 }
 
-.health-placeholder {
-  padding: 4rem;
+.traffic-svg {
+  width: 100%;
+  height: 150px;
+}
+
+.traffic-bar {
+  transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Final Summary */
+.final-summary {
   text-align: center;
+  background: linear-gradient(135deg, rgba(78, 205, 196, 0.05) 0%, rgba(46, 204, 113, 0.05) 100%);
+  border: 1px solid rgba(78, 205, 196, 0.1);
+  border-radius: 20px;
+  padding: 2rem;
+  margin: 2rem 0;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out 0.5s;
+}
+
+.final-summary.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.summary-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.final-summary h3 {
+  color: #fff;
   font-size: 1.5rem;
-  color: #95a5a6;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.final-summary p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 700px;
+  margin: 0 auto 1.5rem;
+}
+
+.cta-button {
+  display: inline-block;
+  background: linear-gradient(135deg, #4ECDC4 0%, #2ECC71 100%);
+  color: #fff;
+  text-decoration: none;
+  padding: 0.75rem 2rem;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(78, 205, 196, 0.3);
+}
+
+/* Attribution */
+.attribution {
+  text-align: center;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 0.8s ease-out 0.7s;
+}
+
+.attribution.animate {
+  opacity: 1;
+}
+
+.attribution p {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .health-section {
+    padding: 4rem 1.5rem 2rem;
+  }
+  
+  .comparison-cards {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .comparison-visual {
+    order: -1;
+  }
+  
+  .wave-chart {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .pathways-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .edinburgh-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .edinburgh-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .traffic-card {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .health-section {
+    padding: 4.5rem 1rem 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .title-icon {
+    font-size: 1.5rem;
+  }
+  
+  .section-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .tab-navigation {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  
+  .tab-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+  
+  .comparison-card {
+    padding: 1.25rem;
+  }
+  
+  .comparison-card .card-icon {
+    font-size: 2rem;
+  }
+  
+  .comparison-card h3 {
+    font-size: 1rem;
+  }
+  
+  .comparison-card .card-value {
+    font-size: 1.5rem;
+  }
+  
+  .card-percentage {
+    font-size: 0.8rem;
+  }
+  
+  .breakdown-name {
+    font-size: 0.75rem;
+  }
+  
+  .breakdown-value {
+    font-size: 0.75rem;
+  }
+  
+  .total-value {
+    font-size: 1.25rem;
+  }
+  
+  .pathways-column {
+    padding: 1.25rem;
+  }
+  
+  .pathways-title {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .pathway-name {
+    font-size: 0.85rem;
+  }
+  
+  .pathway-value {
+    font-size: 1.1rem;
+  }
+  
+  .pathways-insight {
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .pathways-insight p {
+    font-size: 0.85rem;
+  }
+  
+  .edinburgh-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .edin-stat-value {
+    font-size: 1.4rem;
+  }
+  
+  .edin-stat-label {
+    font-size: 0.75rem;
+  }
+  
+  .edinburgh-header-card {
+    padding: 1.25rem;
+  }
+  
+  .edinburgh-badge {
+    font-size: 0.95rem;
+    padding: 0.4rem 1rem;
+  }
+  
+  .edin-card {
+    padding: 1rem;
+  }
+  
+  .edin-card h4 {
+    font-size: 0.9rem;
+  }
+  
+  .benefit-row,
+  .period-row {
+    grid-template-columns: 90px 1fr 60px;
+    gap: 0.5rem;
+  }
+  
+  .benefit-name,
+  .period-label {
+    font-size: 0.7rem;
+  }
+  
+  .benefit-value,
+  .period-value {
+    font-size: 0.75rem;
+  }
+  
+  .final-summary {
+    padding: 1.5rem 1rem;
+  }
+  
+  .summary-icon {
+    font-size: 2.5rem;
+  }
+  
+  .final-summary h3 {
+    font-size: 1.25rem;
+  }
+  
+  .final-summary p {
+    font-size: 0.85rem;
+  }
+  
+  .cta-button {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .edinburgh-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .benefit-row,
+  .period-row {
+    grid-template-columns: 70px 1fr 50px;
+  }
+  
+  .traffic-svg {
+    height: 100px;
+  }
 }

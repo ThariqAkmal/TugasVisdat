@@ -75,7 +75,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(125, 162, 169, 0.85) 0%, rgba(93, 130, 137, 0.9) 100%);
+  background: linear-gradient(135deg, rgba(10, 22, 40, 0.92) 0%, rgba(26, 45, 74, 0.95) 100%);
   z-index: 1;
 }
 
@@ -88,21 +88,40 @@
   text-align: center;
 }
 
+.intro-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(78, 205, 196, 0.2) 0%, rgba(46, 204, 113, 0.2) 100%);
+  border: 1px solid rgba(78, 205, 196, 0.3);
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  color: #4ECDC4;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 1s ease-out 0.2s both;
+}
+
 .intro-title {
-  font-size: 5rem;
-  font-weight: 300;
-  letter-spacing: 2px;
+  font-size: 4rem;
+  font-weight: 700;
+  letter-spacing: 1px;
   margin-bottom: 2rem;
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   animation: fadeInUp 1s ease-out 0.3s both;
+  background: linear-gradient(135deg, #fff 0%, #4ECDC4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .intro-description {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   line-height: 1.8;
   margin-bottom: 1.5rem;
   font-weight: 300;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: rgba(255, 255, 255, 0.85);
   animation: fadeInUp 1s ease-out 0.6s both;
 }
 
@@ -110,11 +129,54 @@
   animation-delay: 0.9s;
 }
 
+.intro-description .highlight {
+  color: #4ECDC4;
+  font-weight: 600;
+}
+
+.intro-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin: 2.5rem 0;
+  animation: fadeInUp 1s ease-out 1s both;
+}
+
+.intro-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.intro-stat .stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #4ECDC4;
+  margin-bottom: 0.25rem;
+}
+
+.intro-stat .stat-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 .scroll-hint {
-  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
   font-size: 0.95rem;
-  opacity: 0.8;
-  animation: fadeInUp 1s ease-out 1.2s both, pulse 2s ease-in-out 2s infinite;
+  color: rgba(255, 255, 255, 0.6);
+  animation: fadeInUp 1s ease-out 1.2s both;
+}
+
+.scroll-icon {
+  width: 24px;
+  height: 24px;
+  animation: bounce 2s ease-in-out 2s infinite;
 }
 
 @keyframes fadeInUp {
@@ -128,14 +190,9 @@
   }
 }
 
-@keyframes pulse {
-  0%, 100% {
-    opacity: 0.8;
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-5px);
-  }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
 }
 
 /* Shared Section Styles */
@@ -157,12 +214,84 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+  .intro-content {
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+  }
+  
+  .intro-badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 1rem;
+  }
+  
   .intro-title {
-    font-size: 3rem;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
   }
 
   .intro-description {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  
+  .intro-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .intro-stat .stat-value {
+    font-size: 1.5rem;
+  }
+  
+  .intro-stat .stat-label {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .intro-content {
+    padding: 1.5rem 1rem;
+  }
+  
+  .intro-badge {
+    font-size: 0.65rem;
+    padding: 0.35rem 0.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .intro-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .intro-description {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  
+  .intro-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  
+  .intro-stat .stat-value {
+    font-size: 1.2rem;
+  }
+  
+  .intro-stat .stat-label {
+    font-size: 0.65rem;
+  }
+  
+  .scroll-hint {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+  }
+  
+  .scroll-icon {
+    width: 20px;
+    height: 20px;
   }
 }

@@ -162,7 +162,7 @@ function App() {
       {/* Scroll Spacer - Creates scrollable space for zoom trigger */}
       <div className="scroll-spacer"></div>
 
-      {/* Intro Section - Edinburgh Explanation with background image */}
+      {/* Intro Section - UK Net-Zero Journey with background image */}
       {showIntro && (
         <section 
           className={`intro-section ${currentSection === 1 ? 'active' : ''} ${currentSection >= 2 ? 'fade-out' : ''}`}
@@ -170,19 +170,42 @@ function App() {
         >
           <div className="intro-overlay"></div>
           <div className="intro-content">
-            <h1 className="intro-title">Edinburgh, Scotland</h1>
+            <div className="intro-badge">Data Visualization Competition 2025</div>
+            <h1 className="intro-title">The Co-Benefits of Net-Zero</h1>
             <p className="intro-description">
-              The capital city of Scotland, Edinburgh is a UNESCO World Heritage Site renowned for its 
-              stunning medieval Old Town and elegant Georgian New Town. Perched on volcanic hills overlooking 
-              the Firth of Forth, this historic city seamlessly blends ancient architecture with modern innovation.
+              Discover how the UK's journey to net-zero delivers substantial economic and health benefits 
+              across 46,426 small areas. From cleaner air to more active communities, climate action 
+              translates into improved quality of life for 67 million residents.
             </p>
             <p className="intro-description">
-              Home to world-class universities, thriving arts scene, and as the host of the world's largest 
-              arts festival, Edinburgh stands as a beacon of culture, education, and sustainable urban development. 
-              Today, the city leads in climate action and public health initiatives, setting an example for 
-              cities worldwide.
+              This interactive visualization explores modelled estimates of socio-economic co-benefits 
+              from the Climate Change Committee's Seventh Carbon Budget recommendations, spanning 
+              2025 to 2050 with a total value of <span className="highlight">£156.8 billion</span>.
             </p>
-            <div className="scroll-hint">Scroll to explore data</div>
+            <div className="intro-stats">
+              <div className="intro-stat">
+                <span className="stat-value">£156.8B</span>
+                <span className="stat-label">Total Benefits</span>
+              </div>
+              <div className="intro-stat">
+                <span className="stat-value">46,426</span>
+                <span className="stat-label">Small Areas</span>
+              </div>
+              <div className="intro-stat">
+                <span className="stat-value">11</span>
+                <span className="stat-label">Benefit Types</span>
+              </div>
+              <div className="intro-stat">
+                <span className="stat-value">25 Years</span>
+                <span className="stat-label">Time Period</span>
+              </div>
+            </div>
+            <div className="scroll-hint">
+              <span>Scroll to explore the data</span>
+              <svg className="scroll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
+            </div>
           </div>
         </section>
       )}
