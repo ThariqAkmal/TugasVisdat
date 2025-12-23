@@ -24,14 +24,12 @@ function App() {
 
   // Reset scroll position on mount to prevent auto-zoom
   useEffect(() => {
-    console.log('App mounted, resetting scroll to 0');
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
   }, []);
 
   const handleZoomComplete = () => {
-    console.log('Zoom complete, showing intro section');
     setTimeout(() => {
       setShowIntro(true);
       setTimeout(() => {
@@ -63,7 +61,6 @@ function App() {
       }
 
       scrollCount++;
-      console.log(`Section ${currentSection}: Scroll ${scrollCount}/3 ${direction > 0 ? '↓' : '↑'}`);
 
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
@@ -77,19 +74,15 @@ function App() {
         // Forward navigation
         if (direction > 0) {
           if (currentSection === 1) {
-            console.log('Transitioning to overview');
             setCurrentSection(2);
             setTimeout(() => setShowSections(prev => ({ ...prev, overview: true })), 600);
           } else if (currentSection === 2) {
-            console.log('Transitioning to timeline');
             setCurrentSection(3);
             setTimeout(() => setShowSections(prev => ({ ...prev, timeline: true })), 600);
           } else if (currentSection === 3) {
-            console.log('Transitioning to categories');
             setCurrentSection(4);
             setTimeout(() => setShowSections(prev => ({ ...prev, categories: true })), 600);
           } else if (currentSection === 4) {
-            console.log('Transitioning to health impact');
             setCurrentSection(5);
             setTimeout(() => setShowSections(prev => ({ ...prev, health: true })), 600);
           }
@@ -97,19 +90,14 @@ function App() {
         // Backward navigation
         else {
           if (currentSection === 5) {
-            console.log('Going back to categories');
             setCurrentSection(4);
           } else if (currentSection === 4) {
-            console.log('Going back to timeline');
             setCurrentSection(3);
           } else if (currentSection === 3) {
-            console.log('Going back to overview');
             setCurrentSection(2);
           } else if (currentSection === 2) {
-            console.log('Going back to intro');
             setCurrentSection(1);
           } else if (currentSection === 1) {
-            console.log('Going back to globe');
             setShowIntro(false);
             setCurrentSection(0);
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -132,7 +120,6 @@ function App() {
 
   // Navigation dots handler
   const handleNavigate = (section) => {
-    console.log(`Navigating to section ${section}`);
     setCurrentSection(section);
     
     // Ensure all previous sections are shown

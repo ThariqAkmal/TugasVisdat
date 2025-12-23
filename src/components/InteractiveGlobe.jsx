@@ -24,8 +24,6 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
       coordinates: [-3.1883, 55.9533]
     };
 
-    console.log('Globe initialized, zoom level:', zoomLevel);
-
     // Clear previous SVG content completely
     const svg = d3.select(svgRef.current);
     svg.selectAll('*').remove();
@@ -145,6 +143,7 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
 
         // Main marker
         edinburghMarker.append('circle')
+          .attr('class', 'marker-main')
           .attr('cx', projection(edinburgh.coordinates)[0])
           .attr('cy', projection(edinburgh.coordinates)[1])
           .attr('r', 8)
@@ -155,6 +154,7 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
 
         // Inner dot
         edinburghMarker.append('circle')
+          .attr('class', 'marker-dot')
           .attr('cx', projection(edinburgh.coordinates)[0])
           .attr('cy', projection(edinburgh.coordinates)[1])
           .attr('r', 3)
@@ -205,7 +205,7 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
         // Update globe-group paths
         svg.select('.globe-group').selectAll('path').attr('d', path);
         
-        // Update Edinburgh marker position
+        // Update Edinburgh marker position (circles and text)
         const coords = projection(edinburgh.coordinates);
         svg.selectAll('.edinburgh-marker circle')
           .attr('cx', coords[0])
@@ -263,17 +263,13 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
         hasScrolledManually = true;
       }, 100);
       
-      console.log('Scroll:', scrollTop, '/ Trigger:', triggerPoint, '/ ZoomLevel:', zoomLevel, '/ IsZooming:', isZooming);
-      
       // Only allow zoom if user has manually scrolled
       if (!hasScrolledManually && scrollTop > 0) {
-        console.log('⚠️ Ignoring scroll - not manual (likely from browser restore)');
         return;
       }
       
       // Zoom IN when scrolling down past trigger point
       if (scrollTop > triggerPoint && zoomLevel === 0 && !isZooming) {
-        console.log('🎯 ZOOM IN TRIGGERED!');
         setIsZooming(true);
         
         const svg = d3.select(svgRef.current);
@@ -310,7 +306,8 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
                 .attr('cy', coords[1]);
               svg.select('.edinburgh-marker text')
                 .attr('x', coords[0])
-                .attr('y', coords[1] - 15);
+                .attr('y', coords[1] - 15)
+                .style('opacity', 1 - t); // Fade out text during zoom in
               
               setZoomLevel(t);
             };
@@ -318,7 +315,8 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
           .on('end', () => {
             setIsZooming(false);
             setZoomLevel(1);
-            console.log('✅ Zoom IN complete!');
+            // Hide Edinburgh text completely after zoom in
+            svg.select('.edinburgh-marker text').style('display', 'none');
             if (onZoomComplete) {
               onZoomComplete();
             }
@@ -326,7 +324,6 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
       }
       // Zoom OUT when scrolling back to top
       else if (scrollTop < 50 && zoomLevel === 1 && !isZooming) {
-        console.log('🔙 ZOOM OUT TRIGGERED!');
         setIsZooming(true);
         
         const svg = d3.select(svgRef.current);
@@ -361,7 +358,8 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
                 .attr('cy', coords[1]);
               svg.select('.edinburgh-marker text')
                 .attr('x', coords[0])
-                .attr('y', coords[1] - 15);
+                .attr('y', coords[1] - 15)
+                .style('opacity', t); // Fade in text during zoom out
               
               setZoomLevel(1 - t);
             };
@@ -369,7 +367,8 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
           .on('end', () => {
             setIsZooming(false);
             setZoomLevel(0);
-            console.log('✅ Zoom OUT complete!');
+            // Show Edinburgh text again after zoom out
+            svg.select('.edinburgh-marker text').style('display', 'block');
             
             // Re-enable drag after zoom out
             const drag = d3.drag()
@@ -400,11 +399,9 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
       }
     };
     
-    console.log('Adding scroll listener...');
     window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
-      console.log('Removing scroll listener...');
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(scrollTimeout);
     };
