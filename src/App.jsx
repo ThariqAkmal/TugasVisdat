@@ -51,8 +51,43 @@ function App() {
     let scrollDirection = 0;
     let scrollTimeout;
     let isTransitioning = false;
+    let boundaryScrollCount = 0; // Counter for scrolls at boundary
 
     const handleWheel = (e) => {
+      // Get the active section element
+      const activeSection = document.querySelector('.overview-dashboard.active, .timeline-section.active, .categories-section.active, .health-section.active');
+      
+      // If there's an active section, check if it's scrollable
+      if (activeSection) {
+        const isScrollable = activeSection.scrollHeight > activeSection.clientHeight;
+        const isAtTop = activeSection.scrollTop === 0;
+        const isAtBottom = activeSection.scrollTop + activeSection.clientHeight >= activeSection.scrollHeight - 1;
+        
+        // Only allow section navigation when at scroll boundaries
+        if (isScrollable) {
+          const scrollingDown = e.deltaY > 0;
+          const scrollingUp = e.deltaY < 0;
+          
+          // If scrolling in content (not at boundary), reset boundary counter
+          if ((scrollingDown && !isAtBottom) || (scrollingUp && !isAtTop)) {
+            boundaryScrollCount = 0;
+            return; // Let the section scroll naturally
+          }
+          
+          // At boundary - count boundary scrolls
+          if ((scrollingDown && isAtBottom) || (scrollingUp && isAtTop)) {
+            boundaryScrollCount++;
+            
+            // Need at least 3 scrolls at boundary before section change
+            if (boundaryScrollCount < 3) {
+              return;
+            }
+            // Reset boundary counter after threshold met
+            boundaryScrollCount = 0;
+          }
+        }
+      }
+
       if (isTransitioning) {
         e.preventDefault();
         return;
