@@ -126,6 +126,9 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
               .style('stroke-width', '0.5px');
           });
 
+        // Remove any existing Edinburgh markers first
+        svg.selectAll('.edinburgh-marker').remove();
+        
         // Add Edinburgh marker with pulsing effect (separate from globe group)
         const edinburghMarker = svg.append('g')
           .attr('class', 'edinburgh-marker');
@@ -306,8 +309,7 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
                 .attr('cy', coords[1]);
               svg.select('.edinburgh-marker text')
                 .attr('x', coords[0])
-                .attr('y', coords[1] - 15)
-                .style('opacity', 1 - t); // Fade out text during zoom in
+                .attr('y', coords[1] - 15);
               
               setZoomLevel(t);
             };
@@ -315,8 +317,6 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
           .on('end', () => {
             setIsZooming(false);
             setZoomLevel(1);
-            // Hide Edinburgh text completely after zoom in
-            svg.select('.edinburgh-marker text').style('display', 'none');
             if (onZoomComplete) {
               onZoomComplete();
             }
@@ -358,8 +358,7 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
                 .attr('cy', coords[1]);
               svg.select('.edinburgh-marker text')
                 .attr('x', coords[0])
-                .attr('y', coords[1] - 15)
-                .style('opacity', t); // Fade in text during zoom out
+                .attr('y', coords[1] - 15);
               
               setZoomLevel(1 - t);
             };
@@ -367,8 +366,6 @@ const InteractiveGlobe = ({ onZoomComplete }) => {
           .on('end', () => {
             setIsZooming(false);
             setZoomLevel(0);
-            // Show Edinburgh text again after zoom out
-            svg.select('.edinburgh-marker text').style('display', 'block');
             
             // Re-enable drag after zoom out
             const drag = d3.drag()
