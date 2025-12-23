@@ -42,6 +42,11 @@ function App() {
   useEffect(() => {
     if (!showIntro) return;
 
+    // Detect platform for scroll sensitivity
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+    const scrollThreshold = isMac ? 12 : 3; // Mac: 12, Windows/Linux: 3
+    const resetTimeout = isMac ? 2500 : 1000; // Mac: 2.5s, Windows/Linux: 1s
+
     let scrollCount = 0;
     let scrollDirection = 0;
     let scrollTimeout;
@@ -65,9 +70,9 @@ function App() {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         scrollCount = 0;
-      }, 1000);
+      }, resetTimeout);
 
-      if (scrollCount >= 3) {
+      if (scrollCount >= scrollThreshold) {
         scrollCount = 0;
         isTransitioning = true;
 
