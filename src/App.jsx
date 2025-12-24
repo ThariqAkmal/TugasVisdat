@@ -24,14 +24,12 @@ function App() {
 
   // Reset scroll position on mount to prevent auto-zoom
   useEffect(() => {
-    console.log('App mounted, resetting scroll to 0');
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
   }, []);
 
   const handleZoomComplete = () => {
-    console.log('Zoom complete, showing intro section');
     setTimeout(() => {
       setShowIntro(true);
       setTimeout(() => {
@@ -44,12 +42,52 @@ function App() {
   useEffect(() => {
     if (!showIntro) return;
 
+    // Detect platform for scroll sensitivity
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+    const scrollThreshold = isMac ? 12 : 3; // Mac: 12, Windows/Linux: 3
+    const resetTimeout = isMac ? 2500 : 1000; // Mac: 2.5s, Windows/Linux: 1s
+
     let scrollCount = 0;
     let scrollDirection = 0;
     let scrollTimeout;
     let isTransitioning = false;
+    let boundaryScrollCount = 0; // Counter for scrolls at boundary
 
     const handleWheel = (e) => {
+      // Get the active section element
+      const activeSection = document.querySelector('.overview-dashboard.active, .timeline-section.active, .categories-section.active, .health-section.active');
+      
+      // If there's an active section, check if it's scrollable
+      if (activeSection) {
+        const isScrollable = activeSection.scrollHeight > activeSection.clientHeight;
+        const isAtTop = activeSection.scrollTop === 0;
+        const isAtBottom = activeSection.scrollTop + activeSection.clientHeight >= activeSection.scrollHeight - 1;
+        
+        // Only allow section navigation when at scroll boundaries
+        if (isScrollable) {
+          const scrollingDown = e.deltaY > 0;
+          const scrollingUp = e.deltaY < 0;
+          
+          // If scrolling in content (not at boundary), reset boundary counter
+          if ((scrollingDown && !isAtBottom) || (scrollingUp && !isAtTop)) {
+            boundaryScrollCount = 0;
+            return; // Let the section scroll naturally
+          }
+          
+          // At boundary - count boundary scrolls
+          if ((scrollingDown && isAtBottom) || (scrollingUp && isAtTop)) {
+            boundaryScrollCount++;
+            
+            // Need at least 3 scrolls at boundary before section change
+            if (boundaryScrollCount < 3) {
+              return;
+            }
+            // Reset boundary counter after threshold met
+            boundaryScrollCount = 0;
+          }
+        }
+      }
+
       if (isTransitioning) {
         e.preventDefault();
         return;
@@ -63,33 +101,28 @@ function App() {
       }
 
       scrollCount++;
-      console.log(`Section ${currentSection}: Scroll ${scrollCount}/3 ${direction > 0 ? '↓' : '↑'}`);
 
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         scrollCount = 0;
-      }, 1000);
+      }, resetTimeout);
 
-      if (scrollCount >= 3) {
+      if (scrollCount >= scrollThreshold) {
         scrollCount = 0;
         isTransitioning = true;
 
         // Forward navigation
         if (direction > 0) {
           if (currentSection === 1) {
-            console.log('Transitioning to overview');
             setCurrentSection(2);
             setTimeout(() => setShowSections(prev => ({ ...prev, overview: true })), 600);
           } else if (currentSection === 2) {
-            console.log('Transitioning to timeline');
             setCurrentSection(3);
             setTimeout(() => setShowSections(prev => ({ ...prev, timeline: true })), 600);
           } else if (currentSection === 3) {
-            console.log('Transitioning to categories');
             setCurrentSection(4);
             setTimeout(() => setShowSections(prev => ({ ...prev, categories: true })), 600);
           } else if (currentSection === 4) {
-            console.log('Transitioning to health impact');
             setCurrentSection(5);
             setTimeout(() => setShowSections(prev => ({ ...prev, health: true })), 600);
           }
@@ -97,19 +130,14 @@ function App() {
         // Backward navigation
         else {
           if (currentSection === 5) {
-            console.log('Going back to categories');
             setCurrentSection(4);
           } else if (currentSection === 4) {
-            console.log('Going back to timeline');
             setCurrentSection(3);
           } else if (currentSection === 3) {
-            console.log('Going back to overview');
             setCurrentSection(2);
           } else if (currentSection === 2) {
-            console.log('Going back to intro');
             setCurrentSection(1);
           } else if (currentSection === 1) {
-            console.log('Going back to globe');
             setShowIntro(false);
             setCurrentSection(0);
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -132,7 +160,6 @@ function App() {
 
   // Navigation dots handler
   const handleNavigate = (section) => {
-    console.log(`Navigating to section ${section}`);
     setCurrentSection(section);
     
     // Ensure all previous sections are shown
